@@ -7,3 +7,4 @@
 ## 2022-7-28 
 	1、.net core6.0 创建webapi项目
 	2、.net core6.0 数据库访问
+	3、.net core6.0 使用log4net进行日志记录
