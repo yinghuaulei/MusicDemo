@@ -16,7 +16,8 @@ builder.Services.AddDbContext<MusicContext>(opt =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMvc();
+builder.Services.AddMvc(); 
+builder.Logging.AddLog4Net("log4net.config");
 
 var app = builder.Build();
 

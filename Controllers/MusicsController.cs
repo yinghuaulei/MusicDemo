@@ -9,9 +9,17 @@ namespace MusicDemo.Controllers
     {
         private readonly MusicContext _context;
 
-        public MusicsController(MusicContext context)
+        private readonly ILogger<MusicsController> _logger;
+
+        /// <summary>
+        /// 构造
+        /// </summary>
+        /// <param name="context">上下文</param>
+        /// <param name="logger">日志</param>
+        public MusicsController(MusicContext context, ILogger<MusicsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         //// GET: Musics
@@ -34,6 +42,9 @@ namespace MusicDemo.Controllers
 
             var music = await _context.Musics
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            _logger.LogInformation("查询音乐");
+
             if (music == null)
             {
                 return NotFound();
