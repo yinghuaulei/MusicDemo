@@ -7,9 +7,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 28));
+var connectionString = builder.Configuration.GetConnectionString("MysqlConnectionString");
+builder.Services.AddDbContext<MusicContext>(opt =>
+{
+    opt.UseMySql(connectionString, serverVersion);
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<MusicContext>(opt => { opt.UseInMemoryDatabase("Music"); });
+builder.Services.AddMvc();
 
 var app = builder.Build();
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MusicDemo.Models;
 
@@ -29,7 +24,7 @@ namespace MusicDemo.Controllers
 
         // GET: Musics/Details/5
         [HttpGet]
-        [Route("MusicDetails")]
+        [Route("GetMusic")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null || _context.Musics == null)
@@ -53,21 +48,22 @@ namespace MusicDemo.Controllers
         //    return View();
         //}
 
-        //// POST: Musics/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
+        // POST: Musics/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost, ActionName("Create")]
         //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,Url,Title")] Music music)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(music);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(music);
-        //}
+        [Route("CreateMusic")]
+        public async Task<IActionResult> Create([Bind("Url,Title")] Music music)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(music);
+                await _context.SaveChangesAsync();
+                return Json(music);
+            }
+            return View(music);
+        }
 
         //// GET: Musics/Edit/5
         //public async Task<IActionResult> Edit(long? id)
@@ -85,62 +81,68 @@ namespace MusicDemo.Controllers
         //    return View(music);
         //}
 
-        //// POST: Musics/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Musics/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost, ActionName("EditMusic")]
+        //[ValidateAntiForgeryToken]
+        [Route("EditMusic")]
+        public async Task<IActionResult> Edit(long id, [Bind("Id,Url,Title")] Music music)
+        {
+            if (id != music.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(music);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MusicExists(music.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return Json(music);
+            }
+            return View(music);
+        }
+
+        // Get: Musics/Delete/5
+        [HttpGet]
+        [Route("DeleteMusic")]
+        public async Task<IActionResult> Delete(long? id)
+        {
+            if (id == null || _context.Musics == null)
+            {
+                return NotFound();
+            }
+
+            var music = await _context.Musics
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (music != null)
+            {
+                _context.Musics.Remove(music);
+                await _context.SaveChangesAsync();
+                return Json("");
+            }
+
+            return NotFound();
+        }
+
+        // POST: Musics/Delete/5
         //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(long id, [Bind("Id,Url,Title")] Music music)
-        //{
-        //    if (id != music.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(music);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!MusicExists(music.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(music);
-        //}
-
-        //// GET: Musics/Delete/5
-        //public async Task<IActionResult> Delete(long? id)
-        //{
-        //    if (id == null || _context.Musics == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var music = await _context.Musics
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (music == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(music);
-        //}
-
-        //// POST: Musics/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
+        ////[ValidateAntiForgeryToken]
+        //[Route("DeleteMusic")]
         //public async Task<IActionResult> DeleteConfirmed(long id)
         //{
         //    if (_context.Musics == null)
@@ -159,7 +161,7 @@ namespace MusicDemo.Controllers
 
         private bool MusicExists(long id)
         {
-          return (_context.Musics?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Musics?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
