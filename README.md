@@ -1,4 +1,4 @@
-# MusicDemo（react+.net core6.0+efcore6.0+mysql）
+# MusicDemo（react+.net core6.0+efcore6.0+mysql8.0.28）
 ## 拉取后相关修改
 	1、Program.cs 定义mysql版本号位置，修改成本地的mysql数据库版本号。
 	2、appsettings.json 修改数据库连接为本机的mysql数据库连接。
