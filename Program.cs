@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MusicDemo.Models;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,11 @@ builder.Services.AddDbContext<MusicContext>(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMvc(); 
+builder.Services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ContractResolver = new DefaultContractResolver()
+{
+    NamingStrategy = new DefaultNamingStrategy()
+}).AddXmlSerializerFormatters();
+
 builder.Logging.AddLog4Net("log4net.config");
 
 var app = builder.Build();

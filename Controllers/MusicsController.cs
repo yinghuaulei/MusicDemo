@@ -5,6 +5,7 @@ using MusicDemo.Models;
 namespace MusicDemo.Controllers
 {
     [ApiController]
+    [Route("api/music")]
     public class MusicsController : Controller
     {
         private readonly MusicContext _context;
@@ -32,7 +33,7 @@ namespace MusicDemo.Controllers
 
         // GET: Musics/Details/5
         [HttpGet]
-        [Route("GetMusic")]
+        [Route("getMusic")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null || _context.Musics == null)
@@ -62,9 +63,9 @@ namespace MusicDemo.Controllers
         // POST: Musics/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost, ActionName("Create")]
+        [HttpPost]
         //[ValidateAntiForgeryToken]
-        [Route("CreateMusic")]
+        [Route("createMusic")]
         public async Task<IActionResult> Create([Bind("Url,Title")] Music music)
         {
             if (ModelState.IsValid)
@@ -95,9 +96,9 @@ namespace MusicDemo.Controllers
         // POST: Musics/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost, ActionName("EditMusic")]
+        [HttpPost]
         //[ValidateAntiForgeryToken]
-        [Route("EditMusic")]
+        [Route("editMusic")]
         public async Task<IActionResult> Edit(long id, [Bind("Id,Url,Title")] Music music)
         {
             if (id != music.Id)
@@ -130,7 +131,7 @@ namespace MusicDemo.Controllers
 
         // Get: Musics/Delete/5
         [HttpGet]
-        [Route("DeleteMusic")]
+        [Route("deleteMusic")]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null || _context.Musics == null)

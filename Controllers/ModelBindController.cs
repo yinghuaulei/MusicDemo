@@ -14,7 +14,7 @@ namespace MusicDemo.Controllers
     /// 默认情况下，ASP.NET Core是处理的JSON数据格式，如果想要使用其他类型，如xml，则需要通过制定Program.cs指定输入类型，然后在对应的方法上通过Consumes来执行Content-Type类型
     /// </summary>
     [ApiController]
-    [Route("api/[Controller]")]
+    [Route("api/modelBind")]
     public class ModelBindController : Controller
     {
         private readonly ILogger<ModelBindController> _logger;
@@ -27,7 +27,7 @@ namespace MusicDemo.Controllers
         #region 参数模型绑定
 
         [HttpGet]
-        [Route("FromQuery")]
+        [Route("fromQuery")]
         public string FromQuery([FromQuery] string param)
         {
             _logger.LogInformation("param:" + param);
@@ -56,7 +56,7 @@ namespace MusicDemo.Controllers
         // [HttpGet]
         // frombody 不允许 httpget
         [HttpPost]
-        [Route("FromBody")]
+        [Route("fromBody")]
         public JsonResult FromBody([FromBody] Music body)
         {
             _logger.LogInformation($"id:{body.Id}, url: {body.Url}, title:{body.Url}");
@@ -68,7 +68,7 @@ namespace MusicDemo.Controllers
         #region 参数验证
 
         [HttpPost]
-        [Route("CheckParam")]
+        [Route("checkParam")]
         public JsonResult CheckParam([FromBody] Music body)
         {
             _logger.LogInformation($"id:{body.Id}, url: {body.Url}, title:{body.Title}, length:{body.Length}");
